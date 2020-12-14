@@ -2,7 +2,10 @@ const express = require('express')
 const serveStatic = require('serve-static')
 const path = require('path')
 const dotenv = require('dotenv')
+const cors = require('cors')
+
 dotenv.config()
+app.use(cors());
 
 const app = express()
 
