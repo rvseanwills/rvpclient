@@ -14,9 +14,10 @@ export const userService = {
 
 function login({email, password}) {
     const requestOptions = {
+        credentials: "include",
         method: 'POST',
         mode: 'cors',
-        headers: { 'Content-Type': 'application/json', 'Origin': 'https://realvirtualplatform.herokuapp.com' },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: email, password: password })
     };
 
