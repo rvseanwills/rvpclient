@@ -14,7 +14,7 @@ export const userService = {
 
 function login({email, password}) {
     const requestOptions = {
-        credentials: "include",
+        // credentials: "include",
         method: 'POST',
         mode: 'cors',
         headers: { 'Content-Type': 'application/json' },
