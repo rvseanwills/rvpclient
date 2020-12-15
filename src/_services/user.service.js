@@ -14,6 +14,7 @@ export const userService = {
 
 function login({email, password}) {
     const requestOptions = {
+        Origin: 'https://realvirtualplatform.herokuapp.com',
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email: email, password: password })
