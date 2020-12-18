@@ -6,12 +6,11 @@ export const facebookService = {
 };
 
 
-function pageInsights(facebook, business, token) {
-            
+function pageInsights(payLoad) {
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': token },
-        body: JSON.stringify({ facebook, business })
+        headers: { 'Content-Type': 'application/json', 'Authorization': payLoad.token },
+        body: JSON.stringify({ facebook: payLoad.facebook, business: payLoad.business })
     };
 
 
@@ -23,12 +22,11 @@ function pageInsights(facebook, business, token) {
 
 }
 
-function pageDetails(page_id, token) {
-
+function pageDetails(payLoad) {
     const requestOptions = {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': token },
-        body: JSON.stringify({ page_id })
+        headers: { 'Content-Type': 'application/json', 'Authorization': payLoad.token },
+        body: JSON.stringify({ page_id: payLoad.page_id })
     };
 
 

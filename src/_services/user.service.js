@@ -3,8 +3,8 @@ const apiUrl = process.env.VUE_APP_BASEURL;
 
 export const userService = {
     login,
-    logout
-    // register,
+    logout,
+    register,
     // getAll,
     // getById,
     // update,
@@ -22,14 +22,37 @@ function login({email, password}) {
 
 return fetch(`${apiUrl}/user/login`, requestOptions)
     .then(handleResponse)
+    .then(res => {
+        // login successful if there's a jwt token in the response
+        if (res.token) {
+            // store user details and jwt token in local storage to keep user logged in between page refreshes
+            return res.user;
+        }
+
+        
+    });
+
+}
+
+function register(user) {
+    console.log(user)
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(user)
+    };
+
+
+return fetch(`${apiUrl}/user/register`, requestOptions)
+    .then(handleResponse)
     .then(user => {
         // login successful if there's a jwt token in the response
         if (user.token) {
             // store user details and jwt token in local storage to keep user logged in between page refreshes
-            localStorage.setItem('user', JSON.stringify(user));
+            return user;
         }
 
-        return user;
+        
     });
 
 }
@@ -37,7 +60,7 @@ return fetch(`${apiUrl}/user/login`, requestOptions)
 
 function logout() {
     // remove user from local storage to log user out
-    localStorage.removeItem('user');
+    localStorage.clear();
 }
 
 

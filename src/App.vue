@@ -12,10 +12,10 @@
         @mouseenter="navEnabled = true"
         @mouseleave="navEnabled = false" 
         class="navlinks-container" >
-            <router-link to="/" v-if="navEnabled" >Home</router-link> 
+            
             <router-link to="/facebook" v-if="navEnabled" >Facebook</router-link> 
-            <router-link to="/instagram" v-if="navEnabled" >Instagram</router-link>   
-            <a v-on:click="logout" v-if="navEnabled" >Logout</a>   
+            <!-- <router-link to="/instagram" v-if="navEnabled" >Instagram</router-link>  -->  
+            <a v-on:click="logoutUser" v-if="navEnabled" >Logout</a>   
         </div>  
     </div>
     
@@ -34,22 +34,26 @@ export default {
       }
     },
     computed: {
-        ...mapState({
-            alert: state => state.alert
-        })
+        // ...mapState({
+        //     alert: state => state.alert
+        // })
     },
     methods: {
-        ...mapActions({
-            clearAlert: 'alert/clear'
-        }),
-        ...mapActions('account', ['logout'])
-    },
-    watch: {
-        $route (){
-            // clear alert on location change
-            this.clearAlert();
+        // ...mapActions({
+        //     clearAlert: 'alert/clear'
+        // }),
+        ...mapActions('account', ['logout']),
+        logoutUser () {
+          this.logout();
+          this.$router.push('/login');
         }
-    }
+    },
+    // watch: {
+    //     $route (){
+    //         // clear alert on location change
+    //         this.clearAlert();
+    //     }
+    // }
 };
 </script>
 <style>
@@ -90,7 +94,7 @@ export default {
 
 .navlinks-container {
 
-  min-width: 240px;
+  min-width: 35%;
   min-height: 6px;
   background-image: linear-gradient(to left, rgba(0,0,255,0.2), rgba(255,0,0,0.4));
   /*background: rgba(255,255,255, 0.8);*/

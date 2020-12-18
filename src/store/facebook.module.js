@@ -1,4 +1,5 @@
 import { facebookService } from '../_services';
+import Vue from 'vue';
 // import { router } from '../router';
 
 const facebook_user = JSON.parse(localStorage.getItem('facebook'));
@@ -9,7 +10,7 @@ if ( !user ) {
     console.log("no user logged in ")
 
 } else {
-    business_id = user.user.business.business_id;
+    business_id = user.business_id;
 }
 
 
@@ -23,32 +24,32 @@ const state = {
 
 
 const actions = {
-    getPageInsights({ dispatch, commit }, {facebook, business, token }) {
+    getPageInsights({ dispatch, commit }, payLoad) {
 
         commit('pageinsightsRequest');
 
-        facebookService.pageInsights(facebook, business, token)
+        facebookService.pageInsights(payLoad)
         .then(
             insights => {
                 commit('pageinsightsSuccess', insights);
             },
             error => {
-                commit('pageinsightsFailure', error);
+                commit('facebookpageFailure', error);
                 dispatch('alert/error', error, { root: true });
             }
         );
     },
-    getPageDetails({ dispatch, commit }, {pageid, token}) {
+    getPageDetails({ dispatch, commit }, payLoad) {
 
         commit('pagedetailsRequest');
 
-        facebookService.pageDetails(pageid, token)
+        facebookService.pageDetails(payLoad)
         .then(
             details => {
                 commit('pagedetailsSuccess', details);
             },
             error => {
-                commit('pagedetailsFailure', error);
+                commit('facebookpageFailure', error);
                 dispatch('alert/error', error, { root: true });
             }
         );
@@ -63,9 +64,14 @@ const mutations = {
     },
     pageinsightsSuccess(state, insights) {
         state.status = { gettingInsights: true };
-        state.pageInsights = insights;
+        Vue.set(state, 'pageInsights', insights)
+        //state.pageInsights = insights;
     },
-    pageinsightsFailure(state, err) {
+    facebookpageFailure(state, err) {
+        if (err == 'Unauthorized') {
+            localStorage.removeItem('facebook');
+            state.facebook = null;
+        }
         state.status = {};
         state.pageDetails = err;
     },
@@ -75,10 +81,6 @@ const mutations = {
     pagedetailsSuccess(state, details) {
         state.status = { gettingDetails: true };
         state.pageDetails = details;
-    },
-    pagedetailsFailure(state, err) {
-        state.status = {};
-        state.pageDetails = err;
     },
     facebookLoginSuccess(state, user) {
         state.facebook_user = user;

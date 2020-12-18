@@ -1,9 +1,21 @@
 <template>
 
   <div class="facebook-container">
-    <button v-show="facebook_user == null" v-on:click="login">Authorize facebook login</button>
+    <button v-show="facebook_user == null && user.permission_type == 'ADMIN'" v-on:click="login">Authorize facebook login</button>
 
-    <FacebookPage></FacebookPage>
+    <div class="page-details">   
+        <!-- <img v-bind:src="pageDetails.cover.source" width="180" height="90"> -->
+        <img v-bind:src="pageDetails.picture.data.url" width="50" height="50">
+        <div class="info">
+          <p>{{pageDetails.name}}</p>
+          <p>Other details</p>
+        </div>
+    </div>
+
+    <FacebookPageInsights></FacebookPageInsights>
+
+
+    
 
   </div>
 
@@ -11,21 +23,21 @@
 
 <script>
 // @ is an alias to /src
-import FacebookPage from "@/components/FacebookPage.vue";
+import FacebookPageInsights from '@/components/FacebookPageInsights'
 import { mapState, mapActions, mapMutations } from 'vuex'
 
 export default {
   name: "Facebook",
   components: {
-    FacebookPage
+    FacebookPageInsights
   },
   computed: {
-    ...mapState('facebook', ['facebook_user', 'status', 'business_id']),
-    ...mapState('account', ['user'])
+    ...mapState('facebook', ['facebook_user', 'status', 'business_id', 'pageDetails']),
+    ...mapState('account', ['user', 'token'])
   },
   methods: {
-    ...mapActions('facebook', ['getPageInsights']),
     ...mapMutations('facebook', ['facebookLoginSuccess']),
+    ...mapActions('facebook', ['getPageDetails']),
     login () {
       var _this = this;
       window.FB.login(function(response) {
@@ -36,16 +48,23 @@ export default {
           const facebook = _this.facebook_user;
           const business = _this.business_id;
           const token = _this.user.token;
-
-          _this.getPageInsights({facebook, business, token});
         } else {
           // The person is not logged into your webpage or we are unable to tell. 
         }
       }, {scope: ['read_insights', 'pages_read_engagement', 'pages_read_user_content']});
     }
   },
-  beforeCreate() {
+  created() {
   	// TODO only if admin
+    
+
+    //Check if admin needs to login
+    if (this.user.permission_type !== 'ADMIN') {
+      return;
+    }
+
+    console.log('Hello' + this.user.permission_type);
+
   	// TODO unload when component closed
   	(function(d, s, id){
      var js, fjs = d.getElementsByTagName(s)[0];
@@ -61,22 +80,56 @@ export default {
         xfbml      : true,
         version    : 'v9.0'
       });
-   };
+    };
 
   },
-  created() {
-    const facebook = this.facebook_user;
-    const business = this.business_id;
-    const token = this.user.token;
+  beforeMount() {
+    
+    //Get details
+    const token = this.token;
 
-    this.getPageInsights({facebook, business, token});
+    var page_id = '1' // Get from DB
+
+    this.getPageDetails({page_id, token });
+
   }
 };
 </script>
 <style>
 .facebook-container {
-  padding: 4px;
-  height: 100%;
-
+  height: 98%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
 }
+
+.facebook-container > div {
+  margin: 32px !important;
+}
+
+/*Details styles*/
+
+.page-details {
+  width: 12%;
+  height: 200px;
+  display: flex;
+  justify-content: space-between;
+  padding: 12px;
+  border: white 1px solid;
+  border-radius: 16px;
+  -webkit-box-shadow: 0px 12px 15px 0px rgba(132,132,132,0.5); 
+    box-shadow: 0px 10px 20px 0px rgba(132,132,132,0.5);
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+  font-size: 12px;
+}
+
+.page-details img {
+  border-radius: 32px;
+}
+
 </style>

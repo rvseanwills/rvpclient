@@ -18,6 +18,7 @@ const actions = {
 
 const mutations = {
     success(state, message) {
+        console.log(state);
         state.type = 'alert-success';
         state.message = message;
     },
