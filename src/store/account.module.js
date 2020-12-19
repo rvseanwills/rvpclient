@@ -97,6 +97,7 @@ const mutations = {
                 loggedIn: false
             }
         }
+        console.log(state, 'ffs');
     },
     registerRequest(state) {
         state.status = { registering: true };
