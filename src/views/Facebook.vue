@@ -45,9 +45,9 @@ export default {
           // Logged into your webpage and Facebook.
           _this.facebookLoginSuccess(response.authResponse);
 
-          const facebook = _this.facebook_user;
-          const business = _this.business_id;
-          const token = _this.user.token;
+          // const facebook = _this.facebook_user;
+          // const business = _this.business_id;
+          // const token = _this.user.token;
         } else {
           // The person is not logged into your webpage or we are unable to tell. 
         }
