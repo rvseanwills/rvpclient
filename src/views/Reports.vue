@@ -90,9 +90,6 @@
 		padding: 1px;
 		background-image: linear-gradient(0deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
 	}
-	.report-active {
-	}
-
 
 	.report-content {
 		height: 100%;
@@ -165,7 +162,7 @@
 		border-radius: 1px;
 		font-size: 70%;
 		width: 10%;
-		margin: 10px;
+		margin: 6px;
 		font-weight: 900;
 		display: flex;
 		justify-content: center;
@@ -183,7 +180,7 @@
 		width: 100%;
 		height: 50px;
 		background: #2b5876;
-
+        margin-top: 4px;
 		display: flex;
 		align-items: center;
 
