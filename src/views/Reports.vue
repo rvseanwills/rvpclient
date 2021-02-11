@@ -180,9 +180,7 @@
 		width: 100%;
 		height: 50px;
 		background: #2b5876;
-        margin-top: 4px;
 		display: flex;
-		align-items: center;
 
 	}
 	.social-logo {
