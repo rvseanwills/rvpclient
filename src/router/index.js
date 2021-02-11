@@ -1,9 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
-import Facebook from "../views/Facebook.vue"
-import FacebookPages from "../components/FacebookPageMenu.vue"
-
 import Welcome from "../views/Welcome.vue"
 import Reports from "../views/Reports.vue"
 import Posts from "../views/Posts.vue"
