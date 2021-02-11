@@ -15,8 +15,11 @@ if ( !user ) {
 
 
 const state = {
+    pages: null,
+    pageId: null,
     pageInsights: null,
     pageDetails: null,
+    pagePosts: null,
     status: {},
     facebook_user: facebook_user,
     business_id: business_id
@@ -24,6 +27,33 @@ const state = {
 
 
 const actions = {
+
+    getPages({ dispatch, commit }, payLoad) {
+        facebookService.getPages(payLoad)
+        .then(
+            pages => {
+                commit('getPagesSuccess', pages);
+            },
+            error => {
+                commit('facebookpageFailure', error);
+                dispatch('alert/error', error, { root: true });
+            }
+        );
+    },
+
+    getPagePosts({ dispatch, commit }, payLoad) {
+        facebookService.pagePosts(payLoad)
+        .then(
+            posts => {
+                commit('pagePostsSuccess', posts);
+            },
+            error => {
+                commit('facebookpageFailure', error);
+                dispatch('alert/error', error, { root: true });
+            }
+        );
+    },
+
     getPageInsights({ dispatch, commit }, payLoad) {
 
         commit('pageinsightsRequest');
@@ -60,12 +90,24 @@ const actions = {
 
 const mutations = {
     pageinsightsRequest(state) {
-        state.status = { gettingInsights: true };
+        Vue.set(state, 'gettingInsights', true)
     },
     pageinsightsSuccess(state, insights) {
-        state.status = { gettingInsights: true };
+        Vue.set(state, 'gettingInsights', false)
         Vue.set(state, 'pageInsights', insights)
-        //state.pageInsights = insights;
+    },
+    pagePostsSuccess(state, posts) {
+        Vue.set(state, 'pagePosts', posts)
+    },
+    getPagesSuccess(state, pages) {
+        Vue.set(state, 'pages', pages)
+    },
+    selectPage(state, id) {
+        Vue.set(state, 'pageId', id)
+
+    },
+    unselectPage(state) {
+        Vue.set(state, 'pageId', null)
     },
     facebookpageFailure(state, err) {
         if (err == 'Unauthorized') {

@@ -1,15 +1,7 @@
 <template>
-	<div class="lab">
-		<!-- <div class="title">
-
-			<p><span>SUMMITS</span></p>
-			<p>60 DAYS HIGH-SPEED OBSERVATIONS</p>
-			<p>LEFT IS THE RECENT THIRTY DAYS</p>
-			<p>RIGHT IS INCREASE OR DECREASE</p>
-			<p>KEY PAGE STATISTICS</p>
-			
-		</div> -->
-		<div class="views stat" @mouseenter="transitionTrend('viewsTrend')" @mouseleave="transitionTrend('viewsTrend')">
+<div class="insights">
+	<div class="selector">
+		<div class="views stat bd-grey" @mouseenter="transitionTrend('viewsTrend')" @mouseleave="transitionTrend('viewsTrend')">
 			
 			<div v-show="viewsTrend">
 
@@ -32,7 +24,7 @@
 			</div>
 		</div>
 
-		<div class="likes stat" @mouseenter="transitionTrend('likesTrend')" @mouseleave="transitionTrend('likesTrend')">
+		<div class="likes stat bd-grey" @mouseenter="transitionTrend('likesTrend')" @mouseleave="transitionTrend('likesTrend')">
 			
 			<div v-show="likesTrend">
 
@@ -50,12 +42,12 @@
 				<p v-else style="text-align: center;"> Trend currently unavailable </p>			
 			</div>
 			<div class="overview" v-show="!likesTrend">
-				<p>likes</p>
+				<p>Likes</p>
 				<p v-bind:class="{'increase': !likesPercent.decrease,  'decrease': likesPercent.decrease}">{{likesPercent.percent}}%</p>
 			</div>
 		</div>
 
-		<div class="cta stat" @mouseenter="transitionTrend('ctaTrend')" @mouseleave="transitionTrend('ctaTrend')">
+		<div class="cta stat bd-grey" @mouseenter="transitionTrend('ctaTrend')" @mouseleave="transitionTrend('ctaTrend')">
 			
 			<div v-show="ctaTrend">
 
@@ -73,14 +65,14 @@
 				<p v-else style="text-align: center;"> Trend currently unavailable </p>			
 			</div>
 			<div class="overview" v-show="!ctaTrend">
-				<p>cta</p>
+				<p>CTA</p>
 				<p v-bind:class="{'increase': !ctaPercent.decrease,  'decrease': ctaPercent.decrease}">{{ctaPercent.percent}}%</p>
 			</div>
 		</div>
 
 		
 	
-		<div class="engagement stat" @mouseenter="transitionTrend('engagementTrend')" @mouseleave="transitionTrend('engagementTrend')">
+		<div class="engagement stat bd-grey" @mouseenter="transitionTrend('engagementTrend')" @mouseleave="transitionTrend('engagementTrend')">
 			
 			<div v-show="engagementTrend">
 
@@ -98,12 +90,27 @@
 				<p v-else style="text-align: center;"> Trend currently unavailable </p>			
 			</div>
 			<div class="overview" v-show="!engagementTrend">
-				<p>cta</p>
+				<p>Clicks</p>
 				<p v-bind:class="{'increase': !engagementPercent.decrease,  'decrease': engagementPercent.decrease}">{{engagementPercent.percent}}%</p>
 			</div>
-		</div>
-			
+		</div>		
 	</div>
+	<div class="charts">
+		<div class="viewsChart">
+			<trend
+			   v-if="viewsDataFull"
+			  :data="viewsDataFull"
+			  :height="100"
+			  :gradient="['#42b983', '#d6d6d6', '#f94144']"
+			  :padding="12"
+			  :radius="4"
+			  :stroke-width="2"
+			  auto-draw
+			  smooth>
+			</trend>
+		</div>	
+	</div>
+</div>
 </template>
 <script>
 import { mapState, mapActions } from 'vuex'
@@ -122,6 +129,8 @@ export default {
 			ctaTrend: false,
 			engagementTrend: false,
 			viewsData: null,
+			viewsDataFull: null,
+			viewsChartData: null,
 			viewsPercent: {
 				decrease: null,
 				change: "unavailable"
@@ -141,6 +150,7 @@ export default {
 				decrease: null,
 				change: "unavailable"
 			}
+			
 		}
 	},
 	computed: {
@@ -155,8 +165,21 @@ export default {
 			var _this = this;
 			var currentMonth = '12'
 
+			var schema = [
+				{
+				"name": "Time",
+				"type": "date",
+				"format": "%Y-%m-%d"
+				},
+				{
+				"name": "Daily Viewers",
+				"type": "number"
+				}
+			]
+
 			unsorted_insights.forEach( (insightCont) => {
 				if (insightCont.name == 'page_views_total') {
+					_this.viewsDataFull = convertToChart(insightCont.values);
 					_this.viewsData = sortCurrentMonth(insightCont);
 					_this.viewsPercent = calcPercent(insightCont)
 				}
@@ -173,6 +196,32 @@ export default {
 					_this.engagementPercent = calcPercent(insightCont)
 				}
 			} )
+
+			//Convert data to be read by chart
+
+			function convertToChart (fb_array) {
+
+				var convertedArr = [];
+				//Array of objects needs to be made into arrays of two values: date and value
+				fb_array.forEach( (o) => {
+
+					//Convert o to array and remove value keys
+					var vals = Object.values( o );
+
+					var arr = [];
+					//Push the date value and remove time stamp
+					var formattedDate = vals[1].substring(0, 10);
+					arr.push(formattedDate);
+					//Push the value
+					arr.push(vals[0])
+					//Push the arr
+					convertedArr.push(arr);
+
+
+				} )
+				return convertedArr;
+
+			}
 			
 			//Sort into a array of single values
 			function sortCurrentMonth(fb_array) {
@@ -250,8 +299,7 @@ export default {
 	beforeMount() {
     	var payLoad = {
     		business: this.user.business_id,
-    		token: this.token,
-    		facebook: null
+    		token: this.token
        	}
     	if (this.facebook_user) {
     		payLoad.facebook = this.facebook_user;
@@ -262,39 +310,43 @@ export default {
 }
 
 </script>
-<style>
+<style scoped>
 	
-.lab {
-	width: 22%;
-	height: 200px;
+.insights {
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.charts {
+	width: 80%;
+}
+
+.viewsChart {
+	border-radius: 4px;
+}
+
+.selector {
+	width: 20%;
 	display: flex;
 	flex-wrap: wrap;
-	justify-content: space-around;
-	background-image: url("../assets/mountain.png");
-	background-position: center;
-	background-size: cover;
-	background-repeat: no-repeat;
-	padding: 8px;
-	border-radius: 4px;
-	/*-webkit-box-shadow: 0px 12px 15px 0px rgba(132,132,132,0.5); 
-  	box-shadow: 0px 5px 8px 0px rgba(132,132,132,0.5);*/
 }
-.lab > div {
-	width: 40%;
+.selector > div {
+	width: 96%;
+	margin-bottom: 2px;
 	color: black;
 	display: flex;
 	flex-direction: column;
-	border-radius: 32px;
-	margin-bottom: 26px;
-	height: 80px;
-	justify-content: center;
-	align-content: center;
-	border: solid 1px white;
-	-webkit-box-shadow: 0px 12px 15px 0px rgba(132,132,132,0.5); 
-  	box-shadow: 0px 5px 8px 0px rgba(132,132,132,0.5);
+	border-radius: 4px;
+	min-height: 95px;
+	-webkit-box-shadow: 0px 10px 10px 0px rgba(132,132,132,0.5); 
+    box-shadow: 0px 10px 10px 0px rgba(132,132,132,0.5);
 
 	
 }
+
 
 .decrease {
 	color: red;
@@ -303,22 +355,6 @@ export default {
 	color: green;
 }
 
-.title {
-	box-shadow: none !important;
-	flex-direction: column;
-	font-size: 8px;
-	border-radius: 2px !important;
-	height: 82px !important;
-}
-.title p {
-	margin: 1px;
-	font-style: italic;
-}
-.title p span {
-	font-size: 8px;
-	font-style: normal !important;
-	font-weight: 900;
-}
 
 .trend {
 	display: flex;
@@ -331,7 +367,7 @@ export default {
 
 }
 .overview p {
-    font-size: 16px;
+    font-size: 12px;
     font-style: italic;
     font-weight: 600;
 }

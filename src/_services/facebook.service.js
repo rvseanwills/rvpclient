@@ -2,11 +2,29 @@ const apiUrl = process.env.VUE_APP_BASEURL;
 
 export const facebookService = {
     pageInsights,
-    pageDetails
+    pageDetails,
+    pagePosts,
+    getPages
 };
 
+function pagePosts(payLoad) {
+    const requestOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': payLoad.token },
+        body: JSON.stringify({ page_id: payLoad.page_id })
+    };
+
+
+    return fetch(`${apiUrl}/facebook/getPagePosts`, requestOptions)
+    .then(handleResponse)
+    .then(details => {
+        console.log('TESTS', details)
+        return details;
+    });
+}
 
 function pageInsights(payLoad) {
+    // TODO ADD PAGE ID IN HERE AND REMOVE FACEBOOK INFO
     const requestOptions = {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': payLoad.token },
@@ -31,6 +49,21 @@ function pageDetails(payLoad) {
 
 
     return fetch(`${apiUrl}/facebook/getPageDetails`, requestOptions)
+    .then(handleResponse)
+    .then(details => {
+        return details;
+    });
+
+} 
+
+function getPages(payLoad) {
+    const requestOptions = {
+        method: 'POST',
+        headers: {'Authorization': payLoad.token }
+    };
+
+
+    return fetch(`${apiUrl}/facebook/getPages`, requestOptions)
     .then(handleResponse)
     .then(details => {
         return details;

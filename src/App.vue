@@ -3,23 +3,39 @@
     
     <!-- <div v-if="alert.message" :class="alert {alert.type}">{{alert.message}}</div> -->
     <div class="content">
-      <router-view />
+      <transition
+        name="slide-left"
+        mode="out-in"
+      >
+        <router-view />
+      </transition>
+      <div id="nav" v-if="authenticated">
+        <div class="item">
+          <router-link to="/Reports" >Reports</router-link> 
+        </div>
+        <div class="item">
+         <router-link to="/Posts" >Posts</router-link> 
+        </div>
+        <div class="item">
+          <router-link to="/Visualisations" >Visuals</router-link> 
+        </div>
+        <div class="item">
+          <router-link to="/Team" >Team</router-link>
+        </div>
+        <div class="item">
+          <router-link to="/Account" >Account</router-link> 
+        </div>
+        <div class="item">
+          <a >Live</a> 
+        </div>
+        <div class="item">
+          <a v-on:click="logoutUser" >Logout</a>
+        </div>
+
+
+      </div>
     </div>
     
-
-    <div id="nav">
-        <div 
-        @mouseenter="navEnabled = true"
-        @mouseleave="navEnabled = false" 
-        class="navlinks-container" >
-            
-            <router-link to="/facebook" v-if="navEnabled" >Facebook</router-link> 
-            <!-- <router-link to="/instagram" v-if="navEnabled" >Instagram</router-link>  -->  
-            <a v-on:click="logoutUser" v-if="navEnabled" >Logout</a>   
-        </div>  
-    </div>
-    
-
   </div>
 </template>
 <script>
@@ -30,106 +46,111 @@ export default {
     name: 'app',
     data () {
       return {
-        navEnabled: false
+        authenticated: true,
+        multiple: null
       }
     },
     computed: {
-        // ...mapState({
-        //     alert: state => state.alert
-        // })
+
     },
     methods: {
-        // ...mapActions({
-        //     clearAlert: 'alert/clear'
-        // }),
+
         ...mapActions('account', ['logout']),
         logoutUser () {
           this.logout();
-          this.$router.push('/login');
+          this.$router.push('/');
         }
-    },
-    // watch: {
-    //     $route (){
-    //         // clear alert on location change
-    //         this.clearAlert();
-    //     }
-    // }
+    }
 };
 </script>
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   height: 100%;
   flex-direction: column;
   display: flex;
-  align-content: center;
+  align-items: center;
   justify-content: center;
 }
 
 .content {
-  flex: 1;
   height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-#app > div {
-  width: 100%;
-}
 
 #nav {
   position: fixed;
-  bottom: 15px;
+  bottom: 10px;
   width: 100%;
+  height: 20px;
+
   display: flex;
-  align-content: center;
+  align-items: center;
   justify-content: center;
-}
 
-
-/*Nav show styles*/
-
-
-
-
-.navlinks-container {
-
-  min-width: 35%;
-  min-height: 6px;
-  background-image: linear-gradient(to left, rgba(0,0,255,0.2), rgba(255,0,0,0.4));
-  /*background: rgba(255,255,255, 0.8);*/
-  border-radius: 12px;
-  margin: 15px;
-  display: flex;
-  align-content: center;
-  justify-content: center;
   cursor: pointer;
-
-  -webkit-box-shadow: 0px 12px 15px 0px rgba(132,132,132,0.5); 
-  box-shadow: 0px 10px 20px 0px rgba(132,132,132,0.5);
 }
 
-.navlinks-container a {
+#nav .item {
+  
+  
+}
+
+.item a {
+  margin: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px;
+  background-color: #4e4376;
+  width: 70px;
+  height: 10px;
+  border-radius: 2px;
+  border: white solid 1px;
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px, rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
   text-decoration: none;
-  margin: 5px 8px 5px 8px;
-  border-radius: 12px;
-  padding: 1px 10px 1px 10px;
-  font-size: 12px;
-  font-weight: 500;
-  color: #2c3e50;
-  line-height: 25px;
-  height: 25px;
-  transition: 0.1s ease-in;
+  font-size: 60%;
+  font-weight: 900;
+  color: white;
 }
 
 
-.navlinks-container a.router-link-exact-active {
-  background-color: #85FFBD;
-  background-image: linear-gradient(45deg, #85FFBD 0%, #FFFB7D 100%);
+#nav .item a:hover {
+    background-image: linear-gradient(45deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%) !important;
 }
 
-.inactive {
-  opacity: 0.9;
+
+.slide-left-enter-active,
+.slide-left-leave-active,
+.slide-right-enter-active,
+.slide-right-leave-active {
+  transition-duration: 0.5s;
+  transition-property: height, opacity, transform;
+  transition-timing-function: cubic-bezier(0.55, 0, 0.1, 1);
+  overflow: hidden;
+}
+
+.slide-left-enter,
+.slide-right-leave-active {
+  opacity: 0;
+  transform: translate(2em, 0);
+}
+
+.slide-left-leave-active,
+.slide-right-enter {
+  opacity: 0;
+  transform: translate(-2em, 0);
+}
+
+
+
+.item a.router-link-exact-active {
+  background-image: linear-gradient(-45deg, #4158D0 0%, #C850C0 46%, #FFCC70 100%);
 }
 
 .alert-success {

@@ -1,6 +1,16 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+
 import Facebook from "../views/Facebook.vue"
+import FacebookPages from "../components/FacebookPageMenu.vue"
+
+import Welcome from "../views/Welcome.vue"
+import Reports from "../views/Reports.vue"
+import Posts from "../views/Posts.vue"
+import Visualisations from "../views/Visualisations.vue"
+import Team from "../views/Team.vue"
+import Account from "../views/Account.vue"
+
 import Login from "../views/Login.vue"
 
 Vue.use(VueRouter);
@@ -15,10 +25,31 @@ const routes = [
   //   component: () =>
   //     import(/* webpackChunkName: "about" */ "../views/About.vue")
   // },
+
   {
-    path: "/facebook",
-    name: "Facebook",
-    component: Facebook
+    path: "/Reports",
+    name: "Reports",
+    component: Reports
+  },
+  {
+    path: "/Posts",
+    name: "Posts",
+    component: Posts
+  },
+  {
+    path: "/Visualisations",
+    name: "Visualisations",
+    component: Visualisations
+  },
+  {
+    path: "/Team",
+    name: "Team",
+    component: Team
+  },
+  {
+    path: "/Account",
+    name: "Account",
+    component: Account
   },
   {
     path: "/Login",
@@ -27,8 +58,8 @@ const routes = [
   },
   {
     path: "*",
-    name: "Facebook",
-    component: Facebook
+    name: "Welcome",
+    component: Welcome
   },
 ];
 
