@@ -141,38 +141,33 @@
 	}
 	.table-section {
 		display: flex;
-		justify-content: center;
-		width: 100%;
+		width: 90%;
 	}
 	.table-weeks {
 		
 	}
 	.table-weeks .heading{
-		background: rgb(255 204 112);
+		background: #4a5075;
 	}
 	.table-stats {
 		
 	}
 	.table-stats .heading{
-		background: rgb(66 88 208);
+		background: #3c2c75;
 	}
 	.heading {
-		color: black;
-		padding: 8px;
-		border-radius: 1px;
-		font-size: 70%;
+		padding: 6px;
+        margin-bottom: 6px;
+		font-size: 80%;
 		width: 10%;
-		margin: 6px;
-		font-weight: 900;
+
 		display: flex;
 		justify-content: center;
 		align-items: center;
 	}
 	.h-title {
-		font-size: 80%;
-		width: 12.5%;
+		font-size: 90%;
 		justify-content: left;
-
 	}
 
 
