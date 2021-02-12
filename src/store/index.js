@@ -3,7 +3,7 @@ import Vuex from 'vuex';
 
 import { alert } from './alert.module';
 import { account } from './account.module';
-import { facebook } from './facebook.module';
+import { report } from './report.module';
 // import { users } from './users.module';
 
 

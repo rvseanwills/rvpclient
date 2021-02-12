@@ -85,6 +85,7 @@
 		align-items: center;
 	}
 	.report {
+		box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 8px 24px, rgba(17, 17, 26, 0.1) 0px 16px 48px;
 		width: 88%;
 		height: 88%;
 		padding: 1px;
@@ -114,11 +115,10 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
-		background: rgb(67,74,118);
-		background: linear-gradient(90deg, rgba(67,74,118,1) 0%, rgba(72,60,113,1) 100%);
 		box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 	}
 	.insight-title {
+		background: #cea762;
 		display: flex;
 		align-items: center;
 		justify-content: center;
