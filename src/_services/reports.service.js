@@ -1,10 +1,7 @@
 const apiUrl = process.env.VUE_APP_BASEURL;
 
 export const reportsService = {
-    pageInsights,
-    pageDetails,
-    pagePosts,
-    getPages
+    getReport
 };
 
 function getReport(payLoad) {
