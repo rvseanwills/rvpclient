@@ -57,14 +57,14 @@ const actions = {
 
 
 const mutations = {
-    initStore(state) {
-        if (localStorage.getItem('store')) {
-            var store = JSON.parse(localStorage.getItem('store'));
-            this.replaceState(
-                Object.assign(state, store)
-            );
-        }
-    },
+    // initStore(state) {
+    //     if (localStorage.getItem('store')) {
+    //         var store = JSON.parse(localStorage.getItem('store'));
+    //         this.replaceState(
+    //             Object.assign(state, store)
+    //         );
+    //     }
+    // },
     loginRequest(state, user) {
         state.status = { loggingIn: true };
         state.user = user;
