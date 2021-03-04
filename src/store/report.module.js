@@ -1,24 +1,10 @@
 import { reportsService } from '../_services';
-// import Vue from 'vue';
-// import { router } from '../router';
-
-// const facebook_user = JSON.parse(localStorage.getItem('facebook'));
-// const user = JSON.parse(localStorage.getItem('user')) || null;
-// let business_id = null;
-// if ( !user ) {
-
-//     console.log("no user logged in ")
-
-// } else {
-//     business_id = user.business_id;
-// }
 
 
 const state = {
     status: {},
     reports: []
 }
-
 
 const actions = {
 
@@ -36,13 +22,11 @@ const actions = {
     }
 };
 
-
 const mutations = {
     
 };
 
-
-export const facebook = {
+export const report = {
     namespaced: true,
     state,
     actions,

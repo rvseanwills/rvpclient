@@ -9,7 +9,7 @@
       >
         <router-view />
       </transition>
-      <div id="nav" v-if="authenticated">
+      <!-- <div id="nav" v-if="authenticated">
         <div class="item">
           <router-link to="/Reports" >Reports</router-link> 
         </div>
@@ -33,7 +33,7 @@
         </div>
 
 
-      </div>
+      </div> -->
     </div>
     
   </div>
@@ -44,15 +44,6 @@ import {  mapActions } from 'vuex'
 
 export default {
     name: 'app',
-    data () {
-      return {
-        authenticated: true,
-        multiple: null
-      }
-    },
-    computed: {
-
-    },
     methods: {
 
         ...mapActions('account', ['logout']),
@@ -65,8 +56,6 @@ export default {
 </script>
 <style>
 #app {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   height: 100%;
   flex-direction: column;
   display: flex;

@@ -1,11 +1,11 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import { alert } from './alert.module';
+// import { alert } from './alert.module';
 import { account } from './account.module';
-// import { report } from './report.module';
-import { facebook } from './facebook.module';
-// import { users } from './users.module';
+import { report } from './report.module';
+// import { facebook } from './facebook.module';
+
 
 
 Vue.use(Vuex);
@@ -13,9 +13,8 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     modules: {
-        alert,
+        report,
         account,
-        facebook
     }
 });
 

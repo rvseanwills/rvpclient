@@ -1,17 +1,6 @@
 import { userService } from '../_services';
 import { router } from '../router';
 
-// var user
-
-// if (typeof localStorage.getItem('user') == 'undefined') {
-//     user = null;
-// } else {
-//     user = JSON.parse(localStorage.getItem('user')) ;
-// }
-
-// const state = user
-//     ? { status: { loggedIn: true }, user }
-//     : { status: {}, user: null };
 
 const state = {
     token: null,

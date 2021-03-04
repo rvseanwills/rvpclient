@@ -1,4 +1,4 @@
-import { facebookService } from '../_services';
+import { facebookService } from '../../_services';
 import Vue from 'vue';
 // import { router } from '../router';
 
